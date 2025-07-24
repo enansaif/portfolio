@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal AI Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/main.css">
+    <link rel="stylesheet" href="static/css/animations.css">
+    <link rel="shortcut icon" href="static/img/favicon.ico" type="image/x-icon">
+    <script defer src="static/js/app.js"></script>
+</head>
+<body>
+    <div class="container-fluid col-xl-7">
+        <nav class="row sticky-top sticky-nav shadow-sm text-end">
+            <div>
+                <a class="p-1 link-color link-style" href="index.html#home">Home</a>
+                <a class="p-1 link-color link-style" href="index.html#experience">Experience</a>
+                <a class="p-1 link-color link-style" href="index.html#projects">Projects</a>
+                <a class="p-1 btn border-0 fs-4 link-color" id="dark-side-toggle" title="Light Toggle"><i id="toggler-icon" class="bi bi-moon-fill"></i></a>
+            </div>
+        </nav>
+
+        <div class="row text-start pt-4">
+            <h1>Legal AI Assistant</h1>
+        </div>
+
+        <div class="row slidein-card rounded shadow-sm my-3 p-3">
+            <h2>High-level Overview</h2>
+            <p>
+                An AI system designed to deliver accurate legal information tailored to the user's location. By incorporating jurisdiction-aware search and authoritative legal sources, the chatbot provides clear, cited answers and directs users to official documentation for further guidance.
+            </p>
+        </div>
+        <div class="row slidein-card rounded shadow-sm my-3 p-3">
+            <div class="d-flex justify-content-center">
+                <img src="static/img/legalai.drawio.png"
+                    alt="Legal AI Assistant Working Diagram"
+                    class="img-fluid"
+                    style="max-width: 80%; height: auto;">
+            </div>
+        </div>
+        <div class="row slidein-card rounded shadow-sm my-3 p-3">
+            <h2>Role & Responsibilities</h2>
+            <h5><b>Search & Retrieval System</b></h5>
+            <ul>
+                <li>Designed and implemented the query augmentation system for the citation engine, deciding how queries should be adapted for each task to get the best results.</li>
+                <li>Improved the vector search process to enhance citation accuracy by improving language model prompts, filtering out problematic data, and optimizing how final answers are generated using those citations.</li>
+            </ul>
+
+            <h5><b>Data Infrastructure</b></h5>
+            <ul>
+                <li>Designed the logic for storing vector data, including pre-processing steps, what metadata to store with each vector, and regional separation by country and state.</li>
+                <li>Designed a logging system to track every website the web scraper visited, failed to access, was blocked from, or ignored — all saved in a database for future reference.</li>
+                <li>Migrated away from a locally run vector database (FAISS) setup to Supabase with pg_vector (a postgresql extension that allows storing vector data) to address scalability, maintenance concerns and metadata filtering.</li>
+            </ul>
+
+            <h5><b>System Performance & Architecture</b></h5>
+            <ul>
+                <li>Optimized the AI’s response generation process to reduce latency by evaluating tools, external services, and choosing between AI agents (Re-Act agent with tools support) and custom-built approach.</li>
+            </ul>
+        </div>
+
+        <div class="row slidein-card rounded shadow-sm my-3 p-3">
+            <h2>Key Achievements</h2>
+            <ul>
+                <li>Successfully convinced management to transition away from the existing Re-Act based AI agent and instead focus on enhancing our custom retrieval workflow. Led the implementation, resulting in a 67% reduction (~90 seconds to ~30 seconds) in response times.</li>
+                <li>Implemented multithreading for parallel execution of independent API calls. This was one of the contributing factors to the overall response time reduction.</li>
+                <li>Identified problematic data sources (e.g., index pages and home pages) by analyzing vector database responses. Created a block list to exclude these sources, resulting in a 25% improvement in citation accuracy.</li>
+                <li>Discovered instability caused by using a single query augmentation method for both vector search and final response generation, developed a separate augmentation module for each process. This improved citation accuracy by 20%.</li>
+                <li>Found that inconsistent search results were caused by a speed-vs-accuracy tradeoff in the vector database’s filtering. Adjusted the search depth, improving citation accuracy by 15% with only a small increase in response time.</li>
+            </ul>
+        </div>
+
+        <div class="row slidein-card rounded shadow-sm my-3 p-3">
+            <h2>Design Decisions and Trade-offs</h2>
+            <ul>
+                <li><b>Why Supabase over self-hosted vector database (FAISS)?</b><br>Chose Supabase over FAISS for better horizontal scalability, metadata filtering, and reduced maintenance complexity.</li>
+                <li><b>Why custom retrieval chain over AI agent with tools (Re-Act agent)?</b><br>AI agents introduced unnecessary latency and unpredictable control flow. We opted for a deterministic chain with clear separation of search and generation phases, allowing better control and debugging.</li>
+                <li><b>Why two separate query augmentation functions?</b><br>Using a single prompt for both vector search and LLM response generation degraded citation quality. Splitting these concerns allowed us to optimize each independently.</li>
+            </ul>
+        </div>
+
+        <div class="row slidein-card rounded shadow-sm my-3 p-3">
+            <h2>Challenges & Constraints</h2>
+            <ul>
+                <li>Limited legal data availability in certain states, requiring custom scraping pipelines and fallback logic.</li>
+                <li>No access to full legal databases due to licensing constraints — had to rely on public legal portals.</li>
+                <li>Latency expectations under 30s total response time despite complex document retrieval and parsing.</li>
+            </ul>
+        </div>
+
+        <div class="row slidein-card rounded shadow-sm my-3 p-3">
+            <h2>Mistakes & Learnings</h2>
+            <h5>1. <b>Accidental Deletion of Admin Panel Data</b></h5>
+            <ul>
+                <li><b>Issue:</b> Ran a volume-wiping command on the development server, causing loss of all admin panel data.</li>
+                <li><b>Root Cause:</b> Misunderstood architecture—admin data in dev was not isolated like in prod.</li>
+                <li><b>Resolution:</b> Migrated admin data to a separate DB in dev to mirror production.</li>
+                <li><b>Lesson:</b> Confirm environment scope before executing infrastructure commands.</li>
+            </ul>
+
+            <h5>2. <b>Broken Vector Index During Data Scraping</b></h5>
+            <ul>
+                <li><b>Issue:</b> Mid-process crash corrupted the vector index in dev, degrading search results.</li>
+                <li><b>Root Cause:</b> Scraper wrote directly to the live dev vector DB.</li>
+                <li><b>Resolution:</b> Added staging vector DB to fully index before replacing the live DB.</li>
+                <li><b>Lesson:</b> Never write directly to live query systems — stage and validate ingestion separately.</li>
+            </ul>
+        </div>
+
+        <div class="row slidein-card rounded shadow-sm my-3 p-3">
+            <h2>Technologies Used</h2>
+            <p>Python, Django, PostgreSQL, pg_vector, Supabase, Faiss (legacy), Docker, AWS EC2, AWS RDS, Langchain (legacy), langgraph (legacy)</p>
+        </div>
+
+        <div class="row slidein-card rounded shadow-sm my-3 p-3">
+            <h2>Confidentiality Note</h2>
+            <p><i>"Details are generalized due to NDA and confidentiality obligations."</i></p>
+        </div>
+
+        <footer class="d-flex justify-content-between align-items-center flex-wrap my-2 p-1">
+            <p>&copy; 2025 Saife Shuhaib Md.</p>
+            <p>Email: <a class="link-color link-style" href="mailto:enansaifme33@gmail.com">enansaifme33@gmail.com</a></p>
+        </footer>
+    </div>
+</body>
+</html>
