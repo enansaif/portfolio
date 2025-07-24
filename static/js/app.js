@@ -22,17 +22,35 @@ toggler.onclick = () => {
   } else {
     togglerIcon.classList.replace("bi-moon-fill", "bi-sun-fill");
   }
+  updateImageSource();
 };
 
-const blurDiv = document.querySelector(".blur-load");
-const img = blurDiv.querySelector("img");
-
-if (img.complete) {
-  loaded();
-} else {
-  img.addEventListener("load", loaded);
+function updateImageSource() {
+  const img = document.getElementById("legalai-img-light");
+  if (!img) {
+    return;
+  }
+  if (document.body.classList.contains("dark-side")) {
+    img.src = "static/img/legalai-dark.drawio.svg";
+  } else {
+    img.src = "static/img/legalai-light.drawio.svg";
+  }
 }
 
-function loaded() {
-  blurDiv.classList.add("loaded");
+function blurLoadProfileImage(){
+  const blurDiv = document.querySelector(".blur-load");
+  if (!blurDiv) {
+    return;
+  }
+  const img = blurDiv.querySelector("img");
+  if (img.complete) {
+    loaded();
+  } else {
+    img.addEventListener("load", loaded);
+  }
+  function loaded() {
+    blurDiv.classList.add("loaded");
+  }
 }
+
+blurLoadProfileImage()
