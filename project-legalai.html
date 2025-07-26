@@ -56,32 +56,65 @@
             <h2>Role & Responsibilities</h2>
             <h5><b>Search & Retrieval System</b></h5>
             <ul>
-                <li>Designed and implemented the query augmentation system for the citation engine, deciding how queries should be adapted for each task to get the best results.</li>
-                <li>Improved the vector search process to enhance citation accuracy by improving language model prompts, filtering out problematic data, and optimizing how final answers are generated using those citations.</li>
+                <li>
+                    Designed and implemented the query augmentation system for the citation engine (Module that generates
+                    the citations), deciding how queries should be adapted for each task to get the best results.
+                </li>
+                <li>
+                    Improved the vector search process to enhance citation accuracy by improving language model prompts,
+                    filtering out problematic data, and optimizing how final answers are generated using those citations.
+                </li>
             </ul>
 
             <h5><b>Data Infrastructure</b></h5>
             <ul>
-                <li>Designed the logic for storing vector data, including pre-processing steps, what metadata to store with each vector, and regional separation by country and state.</li>
-                <li>Designed a logging system to track every website the web scraper visited, failed to access, was blocked from, or ignored — all saved in a database for future reference.</li>
-                <li>Migrated away from a locally run vector database (FAISS) setup to Supabase with pg_vector (a postgresql extension that allows storing vector data) to address scalability, maintenance concerns and metadata filtering.</li>
+                <li>
+                    Designed the logic for storing vector data, including pre-processing steps, what metadata to store
+                    with each vector, and regional separation by country and state.
+                </li>
+                <li>
+                    Designed a logging system to track every website the web scraper visited, failed to access, was blocked
+                    from, or ignored — all saved in a database for future reference.
+                </li>
+                <li>
+                    Migrated away from a locally run vector database (FAISS) setup to Supabase with pg_vector (a postgresql
+                    extension that allows storing vector data) to address scalability, maintenance concerns and metadata filtering.
+                </li>
             </ul>
 
             <h5><b>System Performance & Architecture</b></h5>
             <ul>
-                <li>Optimized the AI’s response generation process to reduce latency by evaluating tools, external services, and choosing between AI agents (Re-Act agent with tools support) and custom-built approach.</li>
+                <li>
+                    Optimized the AI’s response generation process to reduce latency by evaluating tools, external services,
+                    and choosing between AI agents with tools support and custom-built approach.
+                </li>
             </ul>
         </div>
 
         <div class="row slidein-card rounded shadow-sm my-3 p-3">
             <h2>Key Achievements</h2>
             <ul>
-                <li>Successfully convinced management to transition away from the existing Re-Act based AI agent and instead focus on enhancing our custom retrieval workflow. Led the implementation, resulting in a 67% reduction (~90 seconds to ~30 seconds) in response times.</li>
-                <li>Implemented multithreading for parallel execution of independent API calls. This was one of the contributing factors to the overall response time reduction.</li>
-                <li>Identified problematic data sources (e.g., index pages and home pages) by analyzing vector database responses. Created a block list to exclude these sources, resulting in a significant improvement in citation accuracy.</li>
-                <li>Discovered instability caused by using a single query augmentation method for both vector search and final response generation, developed a separate augmentation module for each process. This improved citation accuracy noticeably.</li>
-                <li>Found that inconsistent search results were caused by a speed-vs-accuracy tradeoff in the vector database’s filtering. Adjusted the search depth, improving citation accuracy with only a small increase in response time.</li>
-                <li>Together, these enhancements led to an overall 60% improvement in citation accuracy.</li>
+                <li>
+                    Advocated for transitioning away from the ReAct-based AI agent in favor of a custom retrieval workflow.
+                    Led the implementation, resulting in a 67% reduction in response times (from ~90 seconds to ~30 seconds).
+                </li>
+                <li>
+                    Implemented multithreading for parallel execution of independent API calls. This was one of the contributing
+                    factors to the overall response time reduction.
+                </li>
+                <li>
+                    Identified problematic data sources (e.g., non-informative web pages) by analyzing vector database responses.
+                    Created a block list to exclude these sources, resulting in a significant improvement in citation accuracy.
+                </li>
+                <li>
+                    Discovered instability caused by using a single query augmentation method for both vector search and final
+                    response generation, developed a separate augmentation module for each process. This improved citation accuracy noticeably.
+                </li>
+                <li>
+                    Found that inconsistent search results were caused by a vector search settings prioritized speed over relevance.
+                    Adjusted the search depth, improving citation accuracy with only a small increase in response time.Together,
+                    these enhancements led to an overall 60% improvement in citation accuracy.
+                </li>
 
             </ul>
         </div>
@@ -89,9 +122,19 @@
         <div class="row slidein-card rounded shadow-sm my-3 p-3">
             <h2>Design Decisions and Trade-offs</h2>
             <ul>
-                <li><b>Why Supabase over self-hosted vector database (FAISS)?</b><br>Chose Supabase over FAISS for better horizontal scalability, metadata filtering, and reduced maintenance complexity.</li>
-                <li><b>Why custom retrieval chain over AI agent with tools (Re-Act agent)?</b><br>AI agents introduced unnecessary latency and unpredictable control flow. We opted for a deterministic chain with clear separation of search and generation phases, allowing better control and debugging.</li>
-                <li><b>Why two separate query augmentation functions?</b><br>Using a single prompt for both vector search and LLM response generation degraded citation quality. Splitting these concerns allowed us to optimize each independently.</li>
+                <li>
+                    <b>Why Supabase over self-hosted vector database (FAISS)?</b><br>Chose Supabase for better horizontal scalability,
+                    metadata filtering, and reduced maintenance complexity.
+                </li>
+                <li>
+                    <b>Why custom-built retrieval workflow over AI agent with tools (ReAct agent)?</b><br>AI agents like ReAct (an AI agent
+                    combining reasoning and external tool use) introduced unnecessary latency and unpredictable control flow. We opted for a
+                    deterministic workflow with clear separation of search and generation phases, allowing better control and debugging.
+                </li>
+                <li>
+                    <b>Why two separate query augmentation functions?</b><br>Using a single prompt for both vector search and LLM response
+                    generation degraded citation quality. Splitting these concerns allowed us to optimize each independently.
+                </li>
             </ul>
         </div>
 
@@ -108,19 +151,58 @@
             <h2>Mistakes & Learnings</h2>
             <h5>1. <b>Accidental Deletion of Admin Panel Data</b></h5>
             <ul>
-                <li><b>Issue:</b> Ran a volume-wiping command on the development server, causing loss of all admin panel data.</li>
-                <li><b>Root Cause:</b> Misunderstood architecture—admin data in dev was not isolated like in prod.</li>
-                <li><b>Resolution:</b> Migrated admin data to a separate DB in dev to mirror production.</li>
-                <li><b>Lesson:</b> Confirm environment scope before executing infrastructure commands.</li>
+                <li>
+                    <b>Issue:</b> While temporarily handling DevOps responsibilities during a deployment, ran a volume-wiping
+                    command on the development server, which accidentally deleted all admin panel data including chat history,
+                    settings, and preferences.
+                </li>
+                <li>
+                    <b>Root Cause:</b> Misunderstood the environment architecture — unlike production, the development setup
+                    did not isolate admin data from core services.
+                </li>
+                <li>
+                    <b>Resolution:</b> Migrated admin data in development to a separate database, matching the production
+                    architecture to prevent similar issues in the future.
+                </li>
+                <li>
+                    <b>What I learned:</b> Always confirm the purpose and scope of infrastructure commands. Never assume —
+                    verify before executing.
+                </li>
             </ul>
 
             <h5>2. <b>Broken Vector Index During Data Scraping</b></h5>
             <ul>
-                <li><b>Issue:</b> Mid-process crash corrupted the vector index in dev, degrading search results.</li>
-                <li><b>Root Cause:</b> Scraper wrote directly to the live dev vector DB.</li>
-                <li><b>Resolution:</b> Added staging vector DB to fully index before replacing the live DB.</li>
-                <li><b>Lesson:</b> Never write directly to live query systems — stage and validate ingestion separately.</li>
+                <li>
+                    <b>Issue:</b> During a routine weekly data scrape, the service crashed mid-process. After the crash,
+                    vector search in the development environment returned incomplete or missing legal citations, causing
+                    a noticeable drop in citation engine performance compared to production.
+                </li>
+
+                <li><b>Troubleshooting:</b>
+                    <ul>
+                    <li>Observed inconsistent results between development and production for the same legal queries.</li>
+                    <li>Noticed that citation data retrieved from the dev vector DB was missing key entries.</li>
+                    <li>Checked vector DB size on disk — it was about half the expected size.</li>
+                    <li>Correlated findings with logs showing that the scraping service had crashed partway through the run.</li>
+                    </ul>
+                </li>
+
+                <li>
+                    <b>Root Cause:</b> The scraper was writing directly to the live development vector database. When the
+                    service crashed, it left the vector index incomplete, degrading search accuracy.
+                </li>
+
+                <li>
+                    <b>Resolution:</b> Added a staging vector database that fully completes scraping and indexing before
+                    replacing the live DB. This ensures the live system only receives validated data.
+                </li>
+
+                <li>
+                    <b>What I learned:</b> Never write directly to live query systems. Always stage, validate, and then promote
+                    — especially for critical indexing tasks. Keeping ingestion and query layers separate protects system reliability.
+                </li>
             </ul>
+
         </div>
 
         <div class="row slidein-card rounded shadow-sm my-3 p-3">
