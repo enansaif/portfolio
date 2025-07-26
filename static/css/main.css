@@ -1,6 +1,7 @@
 :root {
     --theme-blue: #55bae2;
     --theme-orange: #f3b542;
+    --theme-links: #004ffa;
     --transition-duration: 0.1s;
     --default-background-color: #e9dcdc;
     --default-card-color: rgb(226, 210, 210);
@@ -47,6 +48,10 @@ body {
 
 .link-color {
     color: var(--default-text-color)
+}
+
+.link-color-theme {
+    color: var(--theme-links)
 }
 
 .slidein-card {
