@@ -73,3 +73,15 @@ body {
 .rounded-item {
     background-color: var(--default-border-color);
 }
+
+.theme-image {
+  display: none;
+}
+
+body:not(.dark-side) .light-image {
+  display: block;
+}
+
+body.dark-side .dark-image {
+  display: block;
+}

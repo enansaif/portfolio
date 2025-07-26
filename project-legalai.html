@@ -40,9 +40,15 @@
         <div class="row slidein-card rounded shadow-sm my-3 p-3">
             <div class="d-flex justify-content-center">
                 <img src="static/img/legalai-light.drawio.svg"
-                    alt="Legal AI Assistant Working Diagram"
-                    class="img-fluid"
+                    alt="Legal AI Assistant Light"
+                    class="img-fluid theme-image light-image"
                     id="legalai-img-light"
+                    style="max-width: 80%; height: auto;">
+
+                <img src="static/img/legalai-dark.drawio.svg"
+                    alt="Legal AI Assistant Dark"
+                    class="img-fluid theme-image dark-image"
+                    id="legalai-img-dark"
                     style="max-width: 80%; height: auto;">
             </div>
         </div>
@@ -72,9 +78,11 @@
             <ul>
                 <li>Successfully convinced management to transition away from the existing Re-Act based AI agent and instead focus on enhancing our custom retrieval workflow. Led the implementation, resulting in a 67% reduction (~90 seconds to ~30 seconds) in response times.</li>
                 <li>Implemented multithreading for parallel execution of independent API calls. This was one of the contributing factors to the overall response time reduction.</li>
-                <li>Identified problematic data sources (e.g., index pages and home pages) by analyzing vector database responses. Created a block list to exclude these sources, resulting in a 25% improvement in citation accuracy.</li>
-                <li>Discovered instability caused by using a single query augmentation method for both vector search and final response generation, developed a separate augmentation module for each process. This improved citation accuracy by 20%.</li>
-                <li>Found that inconsistent search results were caused by a speed-vs-accuracy tradeoff in the vector database’s filtering. Adjusted the search depth, improving citation accuracy by 15% with only a small increase in response time.</li>
+                <li>Identified problematic data sources (e.g., index pages and home pages) by analyzing vector database responses. Created a block list to exclude these sources, resulting in a significant improvement in citation accuracy.</li>
+                <li>Discovered instability caused by using a single query augmentation method for both vector search and final response generation, developed a separate augmentation module for each process. This improved citation accuracy noticeably.</li>
+                <li>Found that inconsistent search results were caused by a speed-vs-accuracy tradeoff in the vector database’s filtering. Adjusted the search depth, improving citation accuracy with only a small increase in response time.</li>
+                <li>Together, these enhancements led to an overall 60% improvement in citation accuracy.</li>
+
             </ul>
         </div>
 
