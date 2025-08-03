@@ -3,9 +3,9 @@
     --theme-orange: #f3b542;
     --theme-links: #004ffa;
     --transition-duration: 0.1s;
-    --default-background-color: #e9dcdc;
-    --default-card-color: rgb(226, 210, 210);
-    --default-border-color: #cebebe;
+    --default-background-color: white;
+    --default-card-color: rgb(244, 244, 244);
+    --default-border-color: rgb(232, 232, 232);
     --default-text-color: black;
 }
 
